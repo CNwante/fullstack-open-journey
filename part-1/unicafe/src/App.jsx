@@ -18,16 +18,27 @@ const App = () => {
       </div>
 
       {/* Feedback Statistics */}
-      <div>
-        <p>good: {good}</p>
-        <p>neutral: {neutral}</p>
-        <p>bad: {bad}</p>
+      <Statistics good={good} neutral={neutral} bad={bad} />
 
+      <div>
         {/* Feedback statistics summary */}
         <p>all: {good + neutral + bad}</p>
         <p>average: {(good - bad) / (good + neutral + bad)}</p>
         <p>positive: {(good / (good + neutral + bad)) * 100} %</p>
       </div>
+    </div>
+  )
+}
+
+const Statistics = (props) => {
+  const { good, neutral, bad } = props
+
+  return (
+    <div>
+      <h1>statistics</h1>
+      <p>good: {good}</p>
+      <p>neutral: {neutral}</p>
+      <p>bad: {bad}</p>
     </div>
   )
 }
