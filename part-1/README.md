@@ -11,9 +11,7 @@
 
 ## Challenges
 
-In the optional Anecdotes exercise, tracking the anecdotes votes was initially challenging.
-
-## Key Takeaways (Engineering Principles)
+In the optional anecdotes exercise, tracking the anecdotes votes was initially challenging.
 
 ## Key Takeaways (Engineering Principles)
 
