@@ -50,35 +50,59 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input value={nameFilter} onChange={handleNameFilterChange} />
-      </div>
+      <Filter onChange={handleNameFilterChange} value={nameFilter}/>
 
       <h3>Add a new</h3>
-      <form onSubmit={addPerson}>
+      <PersonForm onFormSubmit={addPerson} name={newName} number={newNumber} onNameChange={handleNameChange} onNumberChange={handleNumberChange} />
+
+      <h3>Numbers</h3>
+      <Persons nameFilter={nameFilter} filteredPersons={filteredPersons} persons={persons} />
+    </div>
+  )
+}
+
+const Filter = ({ onChange, value }) => {
+  return (
+    <div>
+      filter shown with: <input value={value} onChange={onChange} />
+    </div>
+  )
+}
+
+const PersonForm = ({
+  onFormSubmit,
+  name,
+  number,
+  onNameChange,
+  onNumberChange
+  }) => {
+    return (
+      <form onSubmit={onFormSubmit}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          name: <input value={name} onChange={onNameChange} />
         </div>
         <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
+          number: <input value={number} onChange={onNumberChange} />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
-      </form>
+    </form>
+  )
+}
 
-      <h3>Numbers</h3>
-      <ul>
-        {
-          nameFilter.length > 0 ?
-          (
-            filteredPersons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
-          ):(
-            persons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
-          )
-        }
-      </ul>
-    </div>
+const Persons = ({ nameFilter, filteredPersons, persons }) => {
+  return (
+    <ul>
+      {
+        nameFilter.length > 0 ?
+        (
+          filteredPersons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
+        ):(
+          persons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
+        )
+      }
+    </ul>
   )
 }
 
