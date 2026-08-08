@@ -14,12 +14,31 @@ const App = () => {
     )
   }, [])
 
+  const existingPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+
   const addPerson = (event) => {
     event.preventDefault()
-    if (hasName(newName)) {
-      alert(`${newName} is already added to phonebook`)
+    if (existingPerson) {
+      const confirmOverwrite = window.confirm(`${newName} is already added to phonebook, replace the old number with the new one`)
+
+      if (confirmOverwrite) {
+        const updatedObject = {
+        name: existingPerson.name,
+        number: newNumber
+      }
+
+      personService
+        .updateContact(existingPerson.id, updatedObject)
+        .then(returnedData => {
+          setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedData))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+
       return
     }
+
 
     const personObject = {
       name: newName,
@@ -28,15 +47,11 @@ const App = () => {
 
     personService
       .createContact(personObject)
-      .then(returnedContact => {
-        setPersons(persons.concat(returnedContact))
+      .then(returnedData => {
+        setPersons(persons.concat(returnedData))
         setNewName('')
         setNewNumber('')
       })
-  }
-
-  const hasName = (name) => {
-    return persons.some (person => person.name.toLowerCase() === name.toLowerCase())
   }
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
