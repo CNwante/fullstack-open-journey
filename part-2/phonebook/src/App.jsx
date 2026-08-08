@@ -53,6 +53,15 @@ const App = () => {
     setNameFilter(event.target.value)
   }
 
+  const handleDelete = (id) => {
+    const targetContact = persons.find(person => person.id === id)
+
+    if (window.confirm(`Delete ${targetContact.name}`)) {
+      personService.deleteContact(id)
+      setPersons(persons.filter(person => person.id !== id))
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -62,7 +71,7 @@ const App = () => {
       <PersonForm onFormSubmit={addPerson} name={newName} number={newNumber} onNameChange={handleNameChange} onNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      <Persons nameFilter={nameFilter} filteredPersons={filteredPersons} persons={persons} />
+      <Persons filteredPersons={filteredPersons} onDelete={handleDelete}/>
     </div>
   )
 }
@@ -97,18 +106,29 @@ const PersonForm = ({
   )
 }
 
-const Persons = ({ nameFilter, filteredPersons, persons }) => {
+const Persons = ({filteredPersons, onDelete}) => {
   return (
     <ul>
       {
-        nameFilter.length > 0 ?
-        (
-          filteredPersons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
-        ):(
-          persons.map(person => <li key={person.id}>{person.name}: {person.number}</li>)
-        )
+        filteredPersons.map(person => (
+          <Person
+            key={person.id}
+            name={person.name}
+            number={person.number}
+            onDelete={() => onDelete(person.id)}
+          />
+        ))
       }
     </ul>
+  )
+}
+
+const Person = ({ name, number, onDelete }) => {
+  return (
+    <li>
+      {name}: {number} {" "}
+      <button onClick={onDelete}>Delete</button>
+    </li>
   )
 }
 
