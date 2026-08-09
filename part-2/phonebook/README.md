@@ -12,10 +12,16 @@ A simple React application that displays names of people and their corresponding
 npm install
 ```
 
-4. Start the development server:
+4. Start the json server:
+
+```bash
+npm run server
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-5. Open your browser and visit the local URL displayed in the terminal (typically `http://localhost:5173`).
+6. Open your browser and visit the local URL displayed in the terminal (typically `http://localhost:5173`).
