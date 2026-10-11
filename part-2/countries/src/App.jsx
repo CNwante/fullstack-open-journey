@@ -48,7 +48,7 @@ const App = () => {
         ) : (
           <ul>
             {filteredCountries.map((country) => (
-              <CountryListItem key={country.cca3} country={country}/>
+              <CountryListItem key={country.cca3} country={country} />
             ))}
           </ul>
         )}
@@ -58,18 +58,15 @@ const App = () => {
 }
 
 const CountryListItem = ({ country }) => {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false)
 
   return (
     <li>
-      <div style={{ display: 'inline-block' }}>
-        {country.name.common}
-      </div>{' '}
+      <div style={{ display: 'inline-block' }}>{country.name.common}</div>{' '}
       <button onClick={() => setShowDetails(!showDetails)}>
-        {showDetails === true ? "Hide" : "Show"}
+        {showDetails === true ? 'Hide' : 'Show'}
       </button>
-      {
-        showDetails === true &&
+      {showDetails === true && (
         <CountryDetails
           name={country.name.common}
           capital={country.capital}
@@ -77,7 +74,7 @@ const CountryListItem = ({ country }) => {
           languages={country.languages}
           flags={country.flags}
         />
-      }
+      )}
     </li>
   )
 }
