@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const App = () => {
   const [countries, setCountries] = useState([])
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const countryRequest = axios.get(
@@ -48,7 +48,7 @@ const App = () => {
         ) : (
           <ul>
             {filteredCountries.map((country) => (
-              <li key={country.cca3}>{country.name.common}</li>
+              <CountryListItem key={country.cca3} country={country}/>
             ))}
           </ul>
         )}
@@ -57,8 +57,33 @@ const App = () => {
   )
 }
 
+const CountryListItem = ({ country }) => {
+  const [showDetails, setShowDetails] = useState(false);
+
+  return (
+    <li>
+      <div style={{ display: 'inline-block' }}>
+        {country.name.common}
+      </div>{' '}
+      <button onClick={() => setShowDetails(!showDetails)}>
+        {showDetails === true ? "Hide" : "Show"}
+      </button>
+      {
+        showDetails === true &&
+        <CountryDetails
+          name={country.name.common}
+          capital={country.capital}
+          area={country.area}
+          languages={country.languages}
+          flags={country.flags}
+        />
+      }
+    </li>
+  )
+}
+
 const CountryDetails = ({ name, capital, area, languages, flags }) => {
-  const languageList = languages ? Object.values(languages) : [];
+  const languageList = languages ? Object.values(languages) : []
 
   return (
     <div>
