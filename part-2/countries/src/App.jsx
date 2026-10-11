@@ -4,6 +4,7 @@ import axios from 'axios'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect(() => {
     const countryRequest = axios.get(
@@ -13,13 +14,18 @@ const App = () => {
   }, [])
 
   const filteredCountries = countries.filter((country) =>
-    country.name.common.toLowerCase().includes(searchQuery.toLocaleLowerCase())
+    country.name.common.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const country = filteredCountries[0]
 
   const handleQueryChange = (event) => {
     setSearchQuery(event.target.value)
+    setSelectedCountry(null)
+  }
+
+  const handleSelectedCountry = (targetedCountry) => {
+    setSelectedCountry(targetedCountry)
   }
 
   return (
@@ -31,8 +37,16 @@ const App = () => {
           placeholder="Search countries..."
           onChange={handleQueryChange}
         />
-        {!searchQuery?.trim() ? (
-          <p>No search results displayed!</p>
+        {selectedCountry ? (
+          <CountryDetails
+            name={selectedCountry.name.common}
+            capital={selectedCountry.capital}
+            area={selectedCountry.area}
+            languages={selectedCountry.languages}
+            flags={selectedCountry.flags}
+          />
+        ) : !searchQuery?.trim() ? (
+          <p>Your search results will be displayed here.</p>
         ) : filteredCountries.length > 10 ? (
           <p>Too many matches specify another filter</p>
         ) : filteredCountries.length === 0 ? (
@@ -48,7 +62,11 @@ const App = () => {
         ) : (
           <ul>
             {filteredCountries.map((country) => (
-              <CountryListItem key={country.cca3} country={country} />
+              <CountryListItem
+                key={country.cca3}
+                country={country}
+                onShowClick={() => handleSelectedCountry(country)}
+              />
             ))}
           </ul>
         )}
@@ -57,24 +75,11 @@ const App = () => {
   )
 }
 
-const CountryListItem = ({ country }) => {
-  const [showDetails, setShowDetails] = useState(false)
-
+const CountryListItem = ({ country, onShowClick }) => {
   return (
     <li>
       <div style={{ display: 'inline-block' }}>{country.name.common}</div>{' '}
-      <button onClick={() => setShowDetails(!showDetails)}>
-        {showDetails === true ? 'Hide' : 'Show'}
-      </button>
-      {showDetails === true && (
-        <CountryDetails
-          name={country.name.common}
-          capital={country.capital}
-          area={country.area}
-          languages={country.languages}
-          flags={country.flags}
-        />
-      )}
+      <button onClick={onShowClick}>Show</button>
     </li>
   )
 }
