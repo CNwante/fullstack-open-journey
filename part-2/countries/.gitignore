@@ -26,3 +26,4 @@ dist-ssr
 # Other files
 package-lock.json
 .prettierrc
+.env.local
